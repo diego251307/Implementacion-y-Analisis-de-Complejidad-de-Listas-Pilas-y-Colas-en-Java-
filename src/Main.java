@@ -37,8 +37,8 @@ public class Main {
             { "QueueArray", "enqueue", SIZES },
     };
 
-    // Otros casos aplicables. Se descomenta el PRUEBAS que desee correr (solo 1
-    // activo a la vez)
+    // Otros casos aplicables. Se descomenta el PRUEBAS que desee correr, solo 1
+    // activo a la vez
     /*
      * METODOS O(1) - PUSH DE ESTRUCTURA ESPECIFICA
      * static final Object[][] PRUEBAS = {
