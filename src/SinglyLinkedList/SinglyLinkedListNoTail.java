@@ -1,10 +1,6 @@
-package SinglyLinkedList;
-
-// Clase que representa cada elemento de la lista
-
-class Node<T> {
-    T data;
-    Node<T> next;
+class Node {
+    int data;
+    Node next;
 
     public Node(T data) {
         this.data = data;
@@ -12,11 +8,9 @@ class Node<T> {
     }
 }
 
-// Clase principal de la estructura
-
-public class SinglyLinkedListNoTail<T> {
-    private Node<T> head; // Solo conocemos el inicio
-    private int size;
+// Clase principal
+public class SinglyLinkedList {
+    private Node head; // conocemos el inicio
 
     public SinglyLinkedListNoTail() {
         this.head = null;
@@ -46,28 +40,33 @@ public class SinglyLinkedListNoTail<T> {
         size++;
     }
 
-    // Eliminar el primero: O(1)
-    public void popFront() {
-        if (head != null) {
-            head = head.next;
+    // Eliminar el primero O(1)
+    public int popFront() {
+        if (head == null) {
+            return -1;
         }
-        size--;
+        int ret = head.data;
+        head = head.next;
+        return ret;
     }
 
-    // Eliminar el último: O(n) - Debe buscar al penúltimo
-    public void popBack() {
-        if (head == null)
-            return;
-        if (head.next == null) {
-            head = null;
-            return;
+    // eliminar el último O(n)
+    public int popBack() {
+        if (head == null) {
+            return -1;
         }
-        Node<T> temp = head;
-        while (temp.next.next != null) { // Se detiene en el penúltimo
+        if (head.next == null) {
+            int ret = head.ret;
+            head = null;
+            return ret;
+        }
+        Node temp = head;
+        while (temp.next.next != null) { // se detiene en el penúltimo
             temp = temp.next;
         }
+        int ret = temp.next.ret;
         temp.next = null;
-        size--;
+        return ret;
     }
 
     // Buscar un elemento: O(n)
@@ -86,7 +85,55 @@ public class SinglyLinkedListNoTail<T> {
         return head == null;
     }
 
-    public int size() {
-        return size;
+    public int addAfter(Node key, int data) {
+        if (key == null) {
+            return -1;
+        }
+        Node newNode = new Node(data);
+        newNode.next = key.next; // el nuevo apunta al siguiente del original
+        key.next = newNode; // el original ahora apunta al nuevo
+        return 1;
+    }
+
+    public void erase(int key){
+        if (head == null) {
+            return;
+        }
+        else if (head.data == key){
+            head = head.next;
+            return;
+        }
+
+        Node temp = head;
+        while (temp.next != null && temp.next.data != key) {
+        temp = temp.next;
+
+        if (temp.next != null) {
+        temp.next = temp.next.next; 
+        }
+    }
+
+    public int addBefore(Node key, int data) {
+        if (head == null || key == null) {
+            return -1;
+        }
+        if (head == key) {
+            pushFront(data);
+        }
+        Node temp = head;
+        // buscamos al nodo que apunta al key
+        while (temp.next != key) {
+            temp = temp.next;
+            if (temp == null) {
+                return -1;
+            }
+        }
+        // si encontramos al anterior
+        if (temp != null) {
+            Node newNode = new Node(data);
+            newNode.next = temp.next;
+            temp.next = newNode;
+        }
+        return 1;
     }
 }
