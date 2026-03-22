@@ -1,4 +1,3 @@
-// Clase que representa cada elemento de la lista
 class Node {
     int data;
     Node next;
@@ -9,9 +8,9 @@ class Node {
     }
 }
 
-// Clase principal de la estructura
+// Clase principal
 public class SinglyLinkedList {
-    private Node head; // Solo conocemos el inicio
+    private Node head; // conocemos el inicio
 
     public SinglyLinkedList() {
         this.head = null;
@@ -72,5 +71,53 @@ public class SinglyLinkedList {
     // Verificar si está vacía
     public boolean empty() {
         return head == null;
+    }
+    public void addAfter(Node node, int data) {
+        if (node == null){
+            return;
+        }
+        Node newNode = new Node(data);
+        newNode.next = node.next; // el nuevo apunta al siguiente del original
+        node.next = newNode;      // el original ahora apunta al nuevo
+    }
+    public void erase(int key){
+        if (head == null) {
+            return;
+        }
+        else if (head.data == key){
+            head = head.next;
+            return;
+        }
+
+        Node temp = head;
+        while (temp.next != null && temp.next.data != key) {
+        temp = temp.next;
+
+        if (temp.next != null) {
+        temp.next = temp.next.next; 
+        }
+    }
+    public void addBefore(Node key, int data) {
+        if (head == null || key == null){
+            return;
+        }
+        
+        if (head == key) {
+            pushFront(data);
+            return;
+        }
+    
+        Node temp = head;
+        // buscamos al nodo que apunta al key
+        while (temp != null && temp.next != key) {
+            temp = temp.next;
+        }
+    
+        // si encontramos al anterior
+        if (temp != null) {
+            Node newNode = new Node(data);
+            newNode.next = targetNode;
+            temp.next = newNode;
+        }
     }
 }
