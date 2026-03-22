@@ -19,14 +19,17 @@ public class DoublyLinkedListNoTail<T> {
     }
 
     public T topFront() {
-        if (isEmpty()) throw new RuntimeException("Lista vacía");
+        if (isEmpty())
+            throw new RuntimeException("Lista vacía");
         return head.data;
     }
 
     public T topBack() {
-        if (isEmpty()) throw new RuntimeException("Lista vacía");
+        if (isEmpty())
+            throw new RuntimeException("Lista vacía");
         Node<T> current = head;
-        while (current.next != null) current = current.next;
+        while (current.next != null)
+            current = current.next;
         return current.data;
     }
 
@@ -46,7 +49,8 @@ public class DoublyLinkedListNoTail<T> {
             head = newNode;
         } else {
             Node<T> current = head;
-            while (current.next != null) current = current.next;
+            while (current.next != null)
+                current = current.next;
             current.next = newNode;
             newNode.prev = current;
         }
@@ -54,16 +58,19 @@ public class DoublyLinkedListNoTail<T> {
     }
 
     public T popFront() {
-        if (isEmpty()) throw new RuntimeException("Lista vacía");
+        if (isEmpty())
+            throw new RuntimeException("Lista vacía");
         T data = head.data;
         head = head.next;
-        if (head != null) head.prev = null;
+        if (head != null)
+            head.prev = null;
         size--;
         return data;
     }
 
     public T popBack() {
-        if (isEmpty()) throw new RuntimeException("Lista vacía");
+        if (isEmpty())
+            throw new RuntimeException("Lista vacía");
         if (head.next == null) {
             T data = head.data;
             head = null;
@@ -71,7 +78,8 @@ public class DoublyLinkedListNoTail<T> {
             return data;
         }
         Node<T> current = head;
-        while (current.next.next != null) current = current.next;
+        while (current.next.next != null)
+            current = current.next;
         T data = current.next.data;
         current.next = null;
         size--;
@@ -81,7 +89,8 @@ public class DoublyLinkedListNoTail<T> {
     public Node<T> find(T data) {
         Node<T> current = head;
         while (current != null) {
-            if (current.data.equals(data)) return current;
+            if (current.data.equals(data))
+                return current;
             current = current.next;
         }
         return null;
@@ -89,12 +98,14 @@ public class DoublyLinkedListNoTail<T> {
 
     public void erase(T data) {
         Node<T> target = find(data);
-        if (target == null) return;
+        if (target == null)
+            return;
         eraseNode(target);
     }
 
     public void eraseNode(Node<T> target) {
-        if (target == null) return;
+        if (target == null)
+            return;
         if (target.prev != null) {
             target.prev.next = target.next;
         } else {
@@ -108,7 +119,8 @@ public class DoublyLinkedListNoTail<T> {
 
     public void addBefore(T reference, T newData) {
         Node<T> target = find(reference);
-        if (target == null) throw new RuntimeException("Referencia no encontrada");
+        if (target == null)
+            throw new RuntimeException("Referencia no encontrada");
         Node<T> newNode = new Node<>(newData);
         newNode.next = target;
         newNode.prev = target.prev;
@@ -123,7 +135,8 @@ public class DoublyLinkedListNoTail<T> {
 
     public void addAfter(T reference, T newData) {
         Node<T> target = find(reference);
-        if (target == null) throw new RuntimeException("Referencia no encontrada");
+        if (target == null)
+            throw new RuntimeException("Referencia no encontrada");
         Node<T> newNode = new Node<>(newData);
         newNode.prev = target;
         newNode.next = target.next;

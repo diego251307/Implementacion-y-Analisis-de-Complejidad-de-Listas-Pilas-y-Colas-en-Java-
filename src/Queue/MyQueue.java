@@ -1,20 +1,18 @@
 package Queue;
 
-public class MyQueue<T extends Comparable<T>> {
+public class MyQueue<T> {
 
-    private T[] arreglo;
+    private Object[] arreglo;
     private int size = 0;
 
-    @SuppressWarnings("unchecked")
     public MyQueue() {
-        arreglo = (T[]) new Object[2];
+        arreglo = new Object[2];
     }
 
-    // enqueue - Julian
-    @SuppressWarnings("unchecked")
+    // enqueue
     public void enqueue(T x) {
         if (size >= arreglo.length) {
-            T[] nArreglo = (T[]) new Object[arreglo.length * 2];
+            Object[] nArreglo = new Object[arreglo.length * 2];
             for (int i = 0; i < arreglo.length; i++) {
                 nArreglo[i] = arreglo[i];
             }
@@ -24,48 +22,49 @@ public class MyQueue<T extends Comparable<T>> {
         size++;
     }
 
-    // dequeque - Diego
+    // dequeue
+    @SuppressWarnings("unchecked")
     public T dequeue() {
-        T dq = arreglo[0];
+        T dq = (T) arreglo[0];
         for (int i = 0; i < size - 1; i++) {
             arreglo[i] = arreglo[i + 1];
         }
+        arreglo[size - 1] = null;
         size--;
         return dq;
     }
 
-    // front - Diego
+    // front
+    @SuppressWarnings("unchecked")
     public T front() {
-        if (!isEmpty()) {
-            return arreglo[0];
-        }
+        if (!isEmpty())
+            return (T) arreglo[0];
         return null;
-
     }
 
-    // isEmpty - Julian
+    // isEmpty
     public boolean isEmpty() {
         return size <= 0;
     }
 
-    // size - Diego
+    // size
     public int size() {
         return size;
     }
 
-    // delete - Julian
+    // delete
+    @SuppressWarnings("unchecked")
     public void delete(T n) {
-        boolean aux = false;
-        for (int i = 0; i < arreglo.length - 1; i++) {
-            if (n == arreglo[i])
-                aux = true;
-            if (aux) {
-                arreglo[i] = arreglo[i + 1];
+        for (int i = 0; i < size; i++) {
+            if (n.equals(arreglo[i])) {
+                for (int j = i; j < size - 1; j++) {
+                    arreglo[j] = arreglo[j + 1];
+                }
+                arreglo[size - 1] = null;
+                size--;
+                return;
             }
         }
-        if (aux || arreglo[arreglo.length - 1] == n)
-            size--;
-
     }
 
 }

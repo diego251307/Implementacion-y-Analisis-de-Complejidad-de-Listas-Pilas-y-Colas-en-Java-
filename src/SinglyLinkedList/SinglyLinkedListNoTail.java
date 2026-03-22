@@ -84,34 +84,36 @@ public class SinglyLinkedListNoTail<T> {
         return null;
     }
 
-    // Insertar después de un nodo dado: O(1) una vez localizado el nodo
-    public void addAfter(Node<T> key, T data) {
-        if (key == null)
+    // Insertar después del nodo con valor key: O(n) por el find interno
+    public void addAfter(T key, T data) {
+        Node<T> target = find(key);
+        if (target == null)
             return;
         Node<T> newNode = new Node<>(data);
-        newNode.next = key.next;
-        key.next = newNode;
+        newNode.next = target.next;
+        target.next = newNode;
         size++;
     }
 
-    // Insertar antes de un nodo dado: O(n)
-    public void addBefore(Node<T> key, T data) {
-        if (head == null || key == null)
+    // Insertar antes del nodo con valor key: O(n)
+    public void addBefore(T key, T data) {
+        if (head == null)
             return;
-        if (head == key) {
+        if (head.data.equals(key)) {
             pushFront(data);
             return;
         }
         Node<T> temp = head;
-        while (temp.next != key) {
-            if (temp.next == null)
+        while (temp.next != null) {
+            if (temp.next.data.equals(key)) {
+                Node<T> newNode = new Node<>(data);
+                newNode.next = temp.next;
+                temp.next = newNode;
+                size++;
                 return;
+            }
             temp = temp.next;
         }
-        Node<T> newNode = new Node<>(data);
-        newNode.next = temp.next;
-        temp.next = newNode;
-        size++;
     }
 
     // Eliminar el primer nodo con ese valor: O(n)
@@ -132,6 +134,23 @@ public class SinglyLinkedListNoTail<T> {
             }
             temp = temp.next;
         }
+    }
+
+    // topFront: O(1)
+    public T topFront() {
+        if (empty())
+            return null;
+        return head.data;
+    }
+
+    // topBack: O(n)
+    public T topBack() {
+        if (empty())
+            return null;
+        Node<T> temp = head;
+        while (temp.next != null)
+            temp = temp.next;
+        return temp.data;
     }
 
     public boolean empty() {

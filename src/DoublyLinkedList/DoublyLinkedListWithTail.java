@@ -2,6 +2,18 @@ package DoublyLinkedList;
 
 public class DoublyLinkedListWithTail<T> {
 
+    public static class Node<T> {
+        public T data;
+        public Node<T> next;
+        public Node<T> prev;
+
+        public Node(T data) {
+            this.data = data;
+            this.next = null;
+            this.prev = null;
+        }
+    }
+
     private Node<T> head;
     private Node<T> tail;
     private int size;
@@ -21,12 +33,14 @@ public class DoublyLinkedListWithTail<T> {
     }
 
     public T topFront() {
-        if (isEmpty()) throw new RuntimeException("Lista vacía");
+        if (isEmpty())
+            throw new RuntimeException("Lista vacía");
         return head.data;
     }
 
     public T topBack() {
-        if (isEmpty()) throw new RuntimeException("Lista vacía");
+        if (isEmpty())
+            throw new RuntimeException("Lista vacía");
         return tail.data;
     }
 
@@ -57,7 +71,8 @@ public class DoublyLinkedListWithTail<T> {
     }
 
     public T popFront() {
-        if (isEmpty()) throw new RuntimeException("Lista vacía");
+        if (isEmpty())
+            throw new RuntimeException("Lista vacía");
         T data = head.data;
         if (head == tail) {
             head = null;
@@ -71,7 +86,8 @@ public class DoublyLinkedListWithTail<T> {
     }
 
     public T popBack() {
-        if (isEmpty()) throw new RuntimeException("Lista vacía");
+        if (isEmpty())
+            throw new RuntimeException("Lista vacía");
         T data = tail.data;
         if (head == tail) {
             head = null;
@@ -87,7 +103,8 @@ public class DoublyLinkedListWithTail<T> {
     public Node<T> find(T data) {
         Node<T> current = head;
         while (current != null) {
-            if (current.data.equals(data)) return current;
+            if (current.data.equals(data))
+                return current;
             current = current.next;
         }
         return null;
@@ -95,12 +112,14 @@ public class DoublyLinkedListWithTail<T> {
 
     public void erase(T data) {
         Node<T> target = find(data);
-        if (target == null) return;
+        if (target == null)
+            return;
         eraseNode(target);
     }
 
     public void eraseNode(Node<T> target) {
-        if (target == null) return;
+        if (target == null)
+            return;
         if (target.prev != null) {
             target.prev.next = target.next;
         } else {
@@ -116,7 +135,8 @@ public class DoublyLinkedListWithTail<T> {
 
     public void addBefore(T reference, T newData) {
         Node<T> target = find(reference);
-        if (target == null) throw new RuntimeException("Referencia no encontrada");
+        if (target == null)
+            throw new RuntimeException("Referencia no encontrada");
         Node<T> newNode = new Node<>(newData);
         newNode.next = target;
         newNode.prev = target.prev;
@@ -131,7 +151,8 @@ public class DoublyLinkedListWithTail<T> {
 
     public void addAfter(T reference, T newData) {
         Node<T> target = find(reference);
-        if (target == null) throw new RuntimeException("Referencia no encontrada");
+        if (target == null)
+            throw new RuntimeException("Referencia no encontrada");
         Node<T> newNode = new Node<>(newData);
         newNode.prev = target;
         newNode.next = target.next;
