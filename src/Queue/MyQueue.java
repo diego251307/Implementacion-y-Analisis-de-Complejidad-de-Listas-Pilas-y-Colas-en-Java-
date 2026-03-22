@@ -53,7 +53,6 @@ public class MyQueue<T> {
     }
 
     // delete
-    @SuppressWarnings("unchecked")
     public void delete(T n) {
         for (int i = 0; i < size; i++) {
             if (n.equals(arreglo[i])) {
