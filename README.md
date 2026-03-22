@@ -58,8 +58,6 @@ Implementacion de las estructuras de datos Stack y Queue en Java, usando desde a
 * `size()`: Retorna el número de elementos en la cola.
 * `delete(n)`: Elimina el primer valor `n` que encuentra en la estructura.
   
-**Variables importadas del paquete java.time.*
-
 
 
 ## Desarrolado por:
@@ -74,5 +72,5 @@ Implementacion de las estructuras de datos Stack y Queue en Java, usando desde a
 ## Herramientas:
 
 -  Java
--  SQL
+-  Python
 -  Git
