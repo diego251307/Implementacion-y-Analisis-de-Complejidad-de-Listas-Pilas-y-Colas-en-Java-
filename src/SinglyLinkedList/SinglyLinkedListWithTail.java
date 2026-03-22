@@ -14,11 +14,11 @@ class Node<T> {
 }
 
 // Clase principal de la estructura
-public class SinglyLinkedListTail<T> {
+public class SinglyLinkedListWithTail<T> {
     private Node<T> head; // Conocemos el primer nodo
     private Node<T> tail; // Conocemos el último nodo
 
-    public SinglyLinkedListTail() {
+    public SinglyLinkedListWithTail() {
         this.head = null;
         this.tail = null;
         this.size = 0;
@@ -116,6 +116,26 @@ public class SinglyLinkedListTail<T> {
         newNode.next = node.next;
         node.next = newNode;
         size++;
+    }
+
+    // Eliminar el primer nodo con ese valor: O(n)
+    public void erase(T key) {
+        if (head == null)
+            return;
+        if (head.data.equals(key)) {
+            head = head.next;
+            size--;
+            return;
+        }
+        Node<T> temp = head;
+        while (temp.next != null) {
+            if (temp.next.data.equals(key)) {
+                temp.next = temp.next.next;
+                size--;
+                return;
+            }
+            temp = temp.next;
+        }
     }
 
     // empty: O(1)

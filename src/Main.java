@@ -2,7 +2,7 @@
 // Tarea: Implementación y Análisis de Complejidad — ED 2026-I
 //
 // Estructuras:
-//   List: SinglyLinkedListNoTail, SinglyLinkedListTail,
+//   List: SinglyLinkedListNoTail, SinglyLinkedListWithTail,
 //         DoublyLinkedListNoTail, DoublyLinkedListWithTail
 //   Stack: DynamicArrayStack (arreglo dinámico)
 //   Queue: MyQueue (arreglo dinámico)
@@ -45,9 +45,9 @@ public class Main {
     private static final String CSV_FILE = "datos.csv";
     private static final String PY_SCRIPT = "scripts/graficador.py";
 
-    // Valor que siempre existe en la lista durante addBefore/addAfter.
+    // Valor centinela que siempre existe en la lista durante addBefore/addAfter.
     // Se inserta al final en create() para que find() recorra toda la lista
-    private static final int SENTINEL = -1;
+    private static final Integer SENTINEL = -1;
 
     // INTERFAZ StructureFactory
     // Desacopla la creación de la estructura (fuera del cronómetro) de la
@@ -104,8 +104,8 @@ public class Main {
         return l;
     }
 
-    private static SinglyLinkedListTail<Integer> fillSinglyWithTail(int n) {
-        SinglyLinkedListTail<Integer> l = new SinglyLinkedListTail<>();
+    private static SinglyLinkedListWithTail<Integer> fillSinglyWithTail(int n) {
+        SinglyLinkedListWithTail<Integer> l = new SinglyLinkedListWithTail<>();
         for (int i = 0; i < n; i++)
             l.pushFront(i);
         return l;
@@ -145,11 +145,11 @@ public class Main {
     static void bench_pushFront_SinglyWithTail(int n, int run) {
         exec("SinglyWithTail", "pushFront", n, run, new StructureFactory() {
             public Object create(int n) {
-                return new SinglyLinkedListTail<Integer>();
+                return new SinglyLinkedListWithTail<Integer>();
             }
 
             public void apply(Object e, int v) {
-                ((SinglyLinkedListTail<Integer>) e).pushFront(v);
+                ((SinglyLinkedListWithTail<Integer>) e).pushFront(v);
             }
         });
     }
@@ -194,11 +194,11 @@ public class Main {
     static void bench_pushBack_SinglyWithTail(int n, int run) {
         exec("SinglyWithTail", "pushBack", n, run, new StructureFactory() {
             public Object create(int n) {
-                return new SinglyLinkedListTail<Integer>();
+                return new SinglyLinkedListWithTail<Integer>();
             }
 
             public void apply(Object e, int v) {
-                ((SinglyLinkedListTail<Integer>) e).pushBack(v);
+                ((SinglyLinkedListWithTail<Integer>) e).pushBack(v);
             }
         });
     }
@@ -249,7 +249,7 @@ public class Main {
             }
 
             public void apply(Object e, int v) {
-                SinglyLinkedListTail<Integer> l = (SinglyLinkedListTail<Integer>) e;
+                SinglyLinkedListWithTail<Integer> l = (SinglyLinkedListWithTail<Integer>) e;
                 if (!l.empty())
                     l.popFront();
             }
@@ -307,7 +307,7 @@ public class Main {
             }
 
             public void apply(Object e, int v) {
-                SinglyLinkedListTail<Integer> l = (SinglyLinkedListTail<Integer>) e;
+                SinglyLinkedListWithTail<Integer> l = (SinglyLinkedListWithTail<Integer>) e;
                 if (!l.empty())
                     l.popBack();
             }
@@ -364,7 +364,7 @@ public class Main {
             }
 
             public void apply(Object e, int v) {
-                SinglyLinkedListTail<Integer> l = (SinglyLinkedListTail<Integer>) e;
+                SinglyLinkedListWithTail<Integer> l = (SinglyLinkedListWithTail<Integer>) e;
                 l.find(v % l.size());
             }
         });
@@ -418,7 +418,7 @@ public class Main {
             }
 
             public void apply(Object e, int v) {
-                SinglyLinkedListTail<Integer> l = (SinglyLinkedListTail<Integer>) e;
+                SinglyLinkedListWithTail<Integer> l = (SinglyLinkedListWithTail<Integer>) e;
                 if (!l.empty())
                     l.erase(v % l.size());
             }
@@ -453,117 +453,161 @@ public class Main {
         });
     }
 
-    // addBefore: O(n) en todas. SENTINEL al final hace que find recorra toda
-    // la lista antes de encontrar el nodo de referencia
+    // addBefore y addAfter reciben un Node<T> como referencia, no un valor.
+    // Por eso se usa find(SENTINEL) en create() para obtener ese nodo y se
+    // guarda en un array de tamaño 1 para que sea accesible desde apply().
+    // SENTINEL se inserta al final de la lista para que find() lo recorra
+    // completa antes de encontrarlo, representando el peor caso de O(n).
+
     static void bench_addBefore_SinglyNoTail(int n, int run) {
         exec("SinglyNoTail", "addBefore", n, run, new StructureFactory() {
+            @SuppressWarnings("unchecked")
             public Object create(int size) {
                 SinglyLinkedListNoTail<Integer> l = fillSinglyNoTail(size);
                 l.pushBack(SENTINEL);
-                return l;
+                // Buscamos el nodo SENTINEL una sola vez y lo guardamos
+                return new Object[] { l, l.find(SENTINEL) };
             }
 
+            @SuppressWarnings("unchecked")
             public void apply(Object e, int v) {
-                ((SinglyLinkedListNoTail<Integer>) e).addBefore(SENTINEL, v);
+                Object[] ctx = (Object[]) e;
+                SinglyLinkedListNoTail<Integer> l = (SinglyLinkedListNoTail<Integer>) ctx[0];
+                SinglyLinkedListNoTail.Node<Integer> nodo = (SinglyLinkedListNoTail.Node<Integer>) ctx[1];
+                l.addBefore(nodo, v);
             }
         });
     }
 
     static void bench_addBefore_SinglyWithTail(int n, int run) {
         exec("SinglyWithTail", "addBefore", n, run, new StructureFactory() {
+            @SuppressWarnings("unchecked")
             public Object create(int size) {
-                SinglyLinkedListTail<Integer> l = fillSinglyWithTail(size);
+                SinglyLinkedListWithTail<Integer> l = fillSinglyWithTail(size);
                 l.pushBack(SENTINEL);
-                return l;
+                return new Object[] { l, l.find(SENTINEL) };
             }
 
+            @SuppressWarnings("unchecked")
             public void apply(Object e, int v) {
-                ((SinglyLinkedListTail<Integer>) e).addBefore(SENTINEL, v);
+                Object[] ctx = (Object[]) e;
+                SinglyLinkedListWithTail<Integer> l = (SinglyLinkedListWithTail<Integer>) ctx[0];
+                SinglyLinkedListWithTail.Node<Integer> nodo = (SinglyLinkedListWithTail.Node<Integer>) ctx[1];
+                l.addBefore(nodo, v);
             }
         });
     }
 
     static void bench_addBefore_DoublyNoTail(int n, int run) {
         exec("DoublyNoTail", "addBefore", n, run, new StructureFactory() {
+            @SuppressWarnings("unchecked")
             public Object create(int size) {
                 DoublyLinkedListNoTail<Integer> l = fillDoublyNoTail(size);
                 l.pushBack(SENTINEL);
-                return l;
+                return new Object[] { l, l.find(SENTINEL) };
             }
 
+            @SuppressWarnings("unchecked")
             public void apply(Object e, int v) {
-                ((DoublyLinkedListNoTail<Integer>) e).addBefore(SENTINEL, v);
+                Object[] ctx = (Object[]) e;
+                DoublyLinkedListNoTail<Integer> l = (DoublyLinkedListNoTail<Integer>) ctx[0];
+                DoublyLinkedListNoTail.Node<Integer> nodo = (DoublyLinkedListNoTail.Node<Integer>) ctx[1];
+                l.addBefore(nodo, v);
             }
         });
     }
 
     static void bench_addBefore_DoublyWithTail(int n, int run) {
         exec("DoublyWithTail", "addBefore", n, run, new StructureFactory() {
+            @SuppressWarnings("unchecked")
             public Object create(int size) {
                 DoublyLinkedListWithTail<Integer> l = fillDoublyWithTail(size);
                 l.pushBack(SENTINEL);
-                return l;
+                return new Object[] { l, l.find(SENTINEL) };
             }
 
+            @SuppressWarnings("unchecked")
             public void apply(Object e, int v) {
-                ((DoublyLinkedListWithTail<Integer>) e).addBefore(SENTINEL, v);
+                Object[] ctx = (Object[]) e;
+                DoublyLinkedListWithTail<Integer> l = (DoublyLinkedListWithTail<Integer>) ctx[0];
+                DoublyLinkedListWithTail.Node<Integer> nodo = (DoublyLinkedListWithTail.Node<Integer>) ctx[1];
+                l.addBefore(nodo, v);
             }
         });
     }
 
-    // addAfter: O(n) en todas. Mismo patrón SENTINEL que addBefore
     static void bench_addAfter_SinglyNoTail(int n, int run) {
         exec("SinglyNoTail", "addAfter", n, run, new StructureFactory() {
+            @SuppressWarnings("unchecked")
             public Object create(int size) {
                 SinglyLinkedListNoTail<Integer> l = fillSinglyNoTail(size);
                 l.pushBack(SENTINEL);
-                return l;
+                return new Object[] { l, l.find(SENTINEL) };
             }
 
+            @SuppressWarnings("unchecked")
             public void apply(Object e, int v) {
-                ((SinglyLinkedListNoTail<Integer>) e).addAfter(SENTINEL, v);
+                Object[] ctx = (Object[]) e;
+                SinglyLinkedListNoTail<Integer> l = (SinglyLinkedListNoTail<Integer>) ctx[0];
+                SinglyLinkedListNoTail.Node<Integer> nodo = (SinglyLinkedListNoTail.Node<Integer>) ctx[1];
+                l.addAfter(nodo, v);
             }
         });
     }
 
     static void bench_addAfter_SinglyWithTail(int n, int run) {
         exec("SinglyWithTail", "addAfter", n, run, new StructureFactory() {
+            @SuppressWarnings("unchecked")
             public Object create(int size) {
-                SinglyLinkedListTail<Integer> l = fillSinglyWithTail(size);
+                SinglyLinkedListWithTail<Integer> l = fillSinglyWithTail(size);
                 l.pushBack(SENTINEL);
-                return l;
+                return new Object[] { l, l.find(SENTINEL) };
             }
 
+            @SuppressWarnings("unchecked")
             public void apply(Object e, int v) {
-                ((SinglyLinkedListTail<Integer>) e).addAfter(SENTINEL, v);
+                Object[] ctx = (Object[]) e;
+                SinglyLinkedListWithTail<Integer> l = (SinglyLinkedListWithTail<Integer>) ctx[0];
+                SinglyLinkedListWithTail.Node<Integer> nodo = (SinglyLinkedListWithTail.Node<Integer>) ctx[1];
+                l.addAfter(nodo, v);
             }
         });
     }
 
     static void bench_addAfter_DoublyNoTail(int n, int run) {
         exec("DoublyNoTail", "addAfter", n, run, new StructureFactory() {
+            @SuppressWarnings("unchecked")
             public Object create(int size) {
                 DoublyLinkedListNoTail<Integer> l = fillDoublyNoTail(size);
                 l.pushBack(SENTINEL);
-                return l;
+                return new Object[] { l, l.find(SENTINEL) };
             }
 
+            @SuppressWarnings("unchecked")
             public void apply(Object e, int v) {
-                ((DoublyLinkedListNoTail<Integer>) e).addAfter(SENTINEL, v);
+                Object[] ctx = (Object[]) e;
+                DoublyLinkedListNoTail<Integer> l = (DoublyLinkedListNoTail<Integer>) ctx[0];
+                DoublyLinkedListNoTail.Node<Integer> nodo = (DoublyLinkedListNoTail.Node<Integer>) ctx[1];
+                l.addAfter(nodo, v);
             }
         });
     }
 
     static void bench_addAfter_DoublyWithTail(int n, int run) {
         exec("DoublyWithTail", "addAfter", n, run, new StructureFactory() {
+            @SuppressWarnings("unchecked")
             public Object create(int size) {
                 DoublyLinkedListWithTail<Integer> l = fillDoublyWithTail(size);
                 l.pushBack(SENTINEL);
-                return l;
+                return new Object[] { l, l.find(SENTINEL) };
             }
 
+            @SuppressWarnings("unchecked")
             public void apply(Object e, int v) {
-                ((DoublyLinkedListWithTail<Integer>) e).addAfter(SENTINEL, v);
+                Object[] ctx = (Object[]) e;
+                DoublyLinkedListWithTail<Integer> l = (DoublyLinkedListWithTail<Integer>) ctx[0];
+                DoublyLinkedListWithTail.Node<Integer> nodo = (DoublyLinkedListWithTail.Node<Integer>) ctx[1];
+                l.addAfter(nodo, v);
             }
         });
     }
@@ -733,7 +777,7 @@ public class Main {
     }
 
     private static void runList_SinglyWithTail() {
-        System.out.println("\nParte 1 - SinglyLinkedListTail");
+        System.out.println("\nParte 1 - SinglyLinkedListWithTail");
         for (int n : SIZES)
             for (int r = 0; r < REPETICIONES; r++)
                 bench_pushFront_SinglyWithTail(n, r);
@@ -853,7 +897,7 @@ public class Main {
     // PARTE 3 - Comparativas List vs Stack/Queue por método equivalente
     // Se elige la implementación de List más óptima para cada método:
     // pushFront -> SinglyNoTail (O(1), mínimo overhead, sin prev ni tail)
-    // pushBack -> SinglyWithTail o DoublyWithTail (O(1) con tail)
+    // pushBack -> DoublyWithTail (O(1) con tail)
     // popFront -> SinglyNoTail (O(1), más simple)
     // popBack -> DoublyWithTail (única con O(1) real gracias a prev+tail)
     // find/erase -> DoublyNoTail (O(n) en todas, pero prev acelera el re-enlace)
@@ -923,7 +967,7 @@ public class Main {
         System.out.println("[Warmup] Calentando JVM (" + GLOBAL_WARMUP_OPS + " ops)...");
 
         SinglyLinkedListNoTail<Integer> snt = new SinglyLinkedListNoTail<>();
-        SinglyLinkedListTail<Integer> swt = new SinglyLinkedListTail<>();
+        SinglyLinkedListWithTail<Integer> swt = new SinglyLinkedListWithTail<>();
         DoublyLinkedListNoTail<Integer> dnt = new DoublyLinkedListNoTail<>();
         DoublyLinkedListWithTail<Integer> dwt = new DoublyLinkedListWithTail<>();
 
@@ -1003,7 +1047,6 @@ public class Main {
     }
 
     // MENU PRINCIPAL
-    // Organizado en las 3 partes del análisis del enunciado
 
     public static void main(String[] args) {
 
@@ -1016,7 +1059,7 @@ public class Main {
             System.out.println();
             System.out.println("PARTE 1 - Cada estructura de List por separado");
             System.out.println("  1. SinglyLinkedListNoTail   (todos los metodos)");
-            System.out.println("  2. SinglyLinkedListTail     (todos los metodos)");
+            System.out.println("  2. SinglyLinkedListWithTail     (todos los metodos)");
             System.out.println("  3. DoublyLinkedListNoTail   (todos los metodos)");
             System.out.println("  4. DoublyLinkedListWithTail (todos los metodos)");
             System.out.println();
@@ -1025,12 +1068,12 @@ public class Main {
             System.out.println("  6. MyQueue                  (todos los metodos)");
             System.out.println();
             System.out.println("PARTE 3 - Comparativa List vs Stack/Queue (mejor List vs equivalente)");
-            System.out.println("  7.  pushFront  (SinglyNoTail)   vs  push   (Stack)");
+            System.out.println("  7.  pushFront  (SinglyNoTail)   vs  push    (Stack)");
             System.out.println("  8.  pushBack   (DoublyWithTail) vs  enqueue (Queue)");
-            System.out.println("  9.  popFront   (SinglyNoTail)   vs  pop    (Stack)");
+            System.out.println("  9.  popFront   (SinglyNoTail)   vs  pop     (Stack)");
             System.out.println("  10. popBack    (DoublyWithTail) vs  dequeue (Queue)");
-            System.out.println("  11. find       (DoublyNoTail)   vs  peek   (Stack) vs front (Queue)");
-            System.out.println("  12. erase      (DoublyNoTail)   vs  delete (Stack) vs delete (Queue)");
+            System.out.println("  11. find       (DoublyNoTail)   vs  peek    (Stack) vs front  (Queue)");
+            System.out.println("  12. erase      (DoublyNoTail)   vs  delete  (Stack) vs delete (Queue)");
             System.out.println();
             System.out.println("UTILIDADES");
             System.out.println("  13. Correr todo (parte 1 + 2 + 3)");

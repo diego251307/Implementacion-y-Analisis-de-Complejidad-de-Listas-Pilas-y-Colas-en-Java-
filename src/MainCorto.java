@@ -5,7 +5,7 @@ import DoublyLinkedList.*;
 import Stack.*;
 import Queue.*;
 
-public class Main {
+public class MainCorto {
 
     static final int[] SIZES = { 10, 100, 1_000, 10_000, 100_000, 1_000_000 };
     static final int[] SIZES_LINEAR = { 10, 100, 1_000, 10_000, 100_000 };
@@ -72,10 +72,10 @@ public class Main {
     }
 
     static void pushFront_SinglyWithTail() {
-        SinglyLinkedListTail<Integer>[] r = new SinglyLinkedListTail[1];
+        SinglyLinkedListWithTail<Integer>[] r = new SinglyLinkedListWithTail[1];
         correr("SinglyWithTail", "pushFront", SIZES,
                 () -> {
-                    r[0] = new SinglyLinkedListTail<>();
+                    r[0] = new SinglyLinkedListWithTail<>();
                     return 0;
                 },
                 v -> r[0].pushFront(v));
@@ -113,10 +113,10 @@ public class Main {
     }
 
     static void pushBack_SinglyWithTail() {
-        SinglyLinkedListTail<Integer>[] r = new SinglyLinkedListTail[1];
+        SinglyLinkedListWithTail<Integer>[] r = new SinglyLinkedListWithTail[1];
         correr("SinglyWithTail", "pushBack", SIZES,
                 () -> {
-                    r[0] = new SinglyLinkedListTail<>();
+                    r[0] = new SinglyLinkedListWithTail<>();
                     return 0;
                 },
                 v -> r[0].pushBack(v));
@@ -159,10 +159,10 @@ public class Main {
     }
 
     static void popFront_SinglyWithTail() {
-        SinglyLinkedListTail<Integer>[] r = new SinglyLinkedListTail[1];
+        SinglyLinkedListWithTail<Integer>[] r = new SinglyLinkedListWithTail[1];
         correr("SinglyWithTail", "popFront", SIZES,
                 () -> {
-                    r[0] = new SinglyLinkedListTail<>();
+                    r[0] = new SinglyLinkedListWithTail<>();
                     for (int i = 0; i < 2_000_000; i++)
                         r[0].pushFront(i);
                     return 0;
@@ -220,10 +220,10 @@ public class Main {
     }
 
     static void popBack_SinglyWithTail() {
-        SinglyLinkedListTail<Integer>[] r = new SinglyLinkedListTail[1];
+        SinglyLinkedListWithTail<Integer>[] r = new SinglyLinkedListWithTail[1];
         correr("SinglyWithTail", "popBack", SIZES_LINEAR,
                 () -> {
-                    r[0] = new SinglyLinkedListTail<>();
+                    r[0] = new SinglyLinkedListWithTail<>();
                     for (int i = 0; i < 200_000; i++)
                         r[0].pushFront(i);
                     return 0;
@@ -278,10 +278,10 @@ public class Main {
     }
 
     static void find_SinglyWithTail() {
-        SinglyLinkedListTail<Integer>[] r = new SinglyLinkedListTail[1];
+        SinglyLinkedListWithTail<Integer>[] r = new SinglyLinkedListWithTail[1];
         correr("SinglyWithTail", "find", SIZES_LINEAR,
                 () -> {
-                    r[0] = new SinglyLinkedListTail<>();
+                    r[0] = new SinglyLinkedListWithTail<>();
                     for (int i = 0; i < 100_000; i++)
                         r[0].pushFront(i);
                     return 0;
@@ -330,10 +330,10 @@ public class Main {
     }
 
     static void erase_SinglyWithTail() {
-        SinglyLinkedListTail<Integer>[] r = new SinglyLinkedListTail[1];
+        SinglyLinkedListWithTail<Integer>[] r = new SinglyLinkedListWithTail[1];
         correr("SinglyWithTail", "erase", SIZES_LINEAR,
                 () -> {
-                    r[0] = new SinglyLinkedListTail<>();
+                    r[0] = new SinglyLinkedListWithTail<>();
                     for (int i = 0; i < 200_000; i++)
                         r[0].pushFront(i);
                     return 0;
@@ -389,10 +389,10 @@ public class Main {
     }
 
     static void addBefore_SinglyWithTail() {
-        SinglyLinkedListTail<Integer>[] r = new SinglyLinkedListTail[1];
+        SinglyLinkedListWithTail<Integer>[] r = new SinglyLinkedListWithTail[1];
         correr("SinglyWithTail", "addBefore", SIZES_LINEAR,
                 () -> {
-                    r[0] = new SinglyLinkedListTail<>();
+                    r[0] = new SinglyLinkedListWithTail<>();
                     for (int i = 0; i < 100_000; i++)
                         r[0].pushFront(i);
                     r[0].pushBack(SENTINEL);
@@ -441,10 +441,10 @@ public class Main {
     }
 
     static void addAfter_SinglyWithTail() {
-        SinglyLinkedListTail<Integer>[] r = new SinglyLinkedListTail[1];
+        SinglyLinkedListWithTail<Integer>[] r = new SinglyLinkedListWithTail[1];
         correr("SinglyWithTail", "addAfter", SIZES_LINEAR,
                 () -> {
-                    r[0] = new SinglyLinkedListTail<>();
+                    r[0] = new SinglyLinkedListWithTail<>();
                     for (int i = 0; i < 100_000; i++)
                         r[0].pushFront(i);
                     r[0].pushBack(SENTINEL);
