@@ -35,7 +35,8 @@ public class DynamicArrayStack<T> implements MyStack<T> {
     @Override
     @SuppressWarnings("unchecked")
     public T pop() {
-        if (isEmpty()) throw new RuntimeException("Pila vacía");
+        if (isEmpty())
+            throw new RuntimeException("Pila vacía");
         T top = (T) data[size - 1];
         data[size - 1] = null;
         size--;
@@ -45,7 +46,8 @@ public class DynamicArrayStack<T> implements MyStack<T> {
     @Override
     @SuppressWarnings("unchecked")
     public T peek() {
-        if (isEmpty()) throw new RuntimeException("Pila vacía");
+        if (isEmpty())
+            throw new RuntimeException("Pila vacía");
         return (T) data[size - 1];
     }
 
@@ -81,11 +83,13 @@ public class DynamicArrayStack<T> implements MyStack<T> {
     @Override
     @SuppressWarnings("unchecked")
     public String toString() {
-        if (isEmpty()) return "Pila vacía []";
+        if (isEmpty())
+            return "Pila vacía []";
         StringBuilder sb = new StringBuilder("Cima → [");
         for (int i = size - 1; i >= 0; i--) {
             sb.append(data[i]);
-            if (i > 0) sb.append(", ");
+            if (i > 0)
+                sb.append(", ");
         }
         sb.append("] ← Fondo");
         return sb.toString();
