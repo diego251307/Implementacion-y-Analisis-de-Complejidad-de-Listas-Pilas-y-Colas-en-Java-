@@ -1,4 +1,4 @@
-# Implementación y Análisis de Complejidad de Listas , Pilas y Colas en
+# Implementación y Análisis de Complejidad de Listas , Pilas y Colas en Java
 Java
 > ## Estructuras de Datos (2016699) - Grupo 2
 > Profesor: David Alberto Herrera Alvarez - dherreraal@unal.edu.co
