@@ -4,32 +4,37 @@ public class MyQueue<T> {
 
     private Object[] arreglo;
     private int size = 0;
+    private int head;
+    private int tail;
 
     public MyQueue() {
         arreglo = new Object[2];
+        head = 0;
+        tail = 0;
     }
 
     // enqueue
     public void enqueue(T x) {
         if (size >= arreglo.length) {
             Object[] nArreglo = new Object[arreglo.length * 2];
-            for (int i = 0; i < arreglo.length; i++) {
-                nArreglo[i] = arreglo[i];
+            for (int i = 0; i < size; i++) {
+                nArreglo[i] = arreglo[(head + i) % arreglo.length];
             }
+            head = 0;
+            tail = size;
             arreglo = nArreglo;
         }
-        arreglo[size] = x;
+        arreglo[tail] = x;
+        tail = (tail + 1) % arreglo.length;
         size++;
     }
 
     // dequeue
     @SuppressWarnings("unchecked")
     public T dequeue() {
-        T dq = (T) arreglo[0];
-        for (int i = 0; i < size - 1; i++) {
-            arreglo[i] = arreglo[i + 1];
-        }
-        arreglo[size - 1] = null;
+        T dq = (T) arreglo[head];
+        arreglo[head] = null;
+        head = (head + 1) % arreglo.length;
         size--;
         return dq;
     }
@@ -37,8 +42,7 @@ public class MyQueue<T> {
     // front
     @SuppressWarnings("unchecked")
     public T front() {
-        if (!isEmpty())
-            return (T) arreglo[0];
+        if (!isEmpty()) return (T) arreglo[head];
         return null;
     }
 
@@ -55,15 +59,19 @@ public class MyQueue<T> {
     // delete
     public void delete(T n) {
         for (int i = 0; i < size; i++) {
-            if (n.equals(arreglo[i])) {
+            int indx = (head + i) % arreglo.length;
+            if (n.equals(arreglo[indx])) {
                 for (int j = i; j < size - 1; j++) {
-                    arreglo[j] = arreglo[j + 1];
+                    arreglo[(head + j) % arreglo.length] = arreglo[(head +
+                        j +
+                        1) %
+                    arreglo.length];
                 }
-                arreglo[size - 1] = null;
+                arreglo[(head + size - 1) % arreglo.length] = null;
+                tail = (tail - 1 + arreglo.length) % arreglo.length;
                 size--;
                 return;
             }
         }
     }
-
 }
