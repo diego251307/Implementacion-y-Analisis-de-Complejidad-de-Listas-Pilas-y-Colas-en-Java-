@@ -30,7 +30,7 @@ public class MyQueue<T> {
     }
 
     // dequeue
-    @SuppressWarnings("unchecked")
+
     public T dequeue() {
         T dq = (T) arreglo[head];
         arreglo[head] = null;
@@ -40,9 +40,10 @@ public class MyQueue<T> {
     }
 
     // front
-    @SuppressWarnings("unchecked")
+
     public T front() {
-        if (!isEmpty()) return (T) arreglo[head];
+        if (!isEmpty())
+            return (T) arreglo[head];
         return null;
     }
 
@@ -63,9 +64,9 @@ public class MyQueue<T> {
             if (n.equals(arreglo[indx])) {
                 for (int j = i; j < size - 1; j++) {
                     arreglo[(head + j) % arreglo.length] = arreglo[(head +
-                        j +
-                        1) %
-                    arreglo.length];
+                            j +
+                            1) %
+                            arreglo.length];
                 }
                 arreglo[(head + size - 1) % arreglo.length] = null;
                 tail = (tail - 1 + arreglo.length) % arreglo.length;

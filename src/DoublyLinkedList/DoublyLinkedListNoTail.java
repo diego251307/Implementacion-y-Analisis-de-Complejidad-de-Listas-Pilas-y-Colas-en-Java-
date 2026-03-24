@@ -2,6 +2,18 @@ package DoublyLinkedList;
 
 public class DoublyLinkedListNoTail<T> {
 
+    private class Node<T> {
+        private T data;
+        private Node<T> next;
+        private Node<T> prev;
+
+        private Node(T data) {
+            this.data = data;
+            this.next = null;
+            this.prev = null;
+        }
+    }
+
     private Node<T> head;
     private int size;
 

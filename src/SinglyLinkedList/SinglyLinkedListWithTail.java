@@ -1,21 +1,19 @@
 package SinglyLinkedList;
 
-class Node<T> {
-    T data;
-    Node<T> next;
-    Node<T> prev;
-
-    public Node(T data) {
-        this.data = data;
-        this.next = null;
-        this.prev = null;
-    }
-}
-
 public class SinglyLinkedListWithTail<T> {
     private Node<T> head;
     private Node<T> tail;
     private int size;
+
+    private class Node<T> {
+        T data;
+        Node<T> next;
+
+        private Node(T data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
     public SinglyLinkedListWithTail() {
         this.head = null;
