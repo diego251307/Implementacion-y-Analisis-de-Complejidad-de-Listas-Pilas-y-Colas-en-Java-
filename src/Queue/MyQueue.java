@@ -13,7 +13,7 @@ public class MyQueue<T> {
         tail = 0;
     }
 
-    // enqueue
+    // enqueue O(1) amortizado
     public void enqueue(T x) {
         if (size >= arreglo.length) {
             Object[] nArreglo = new Object[arreglo.length * 2];
@@ -29,7 +29,7 @@ public class MyQueue<T> {
         size++;
     }
 
-    // dequeue
+    // dequeue O(1)
 
     public T dequeue() {
         T dq = (T) arreglo[head];
@@ -39,7 +39,7 @@ public class MyQueue<T> {
         return dq;
     }
 
-    // front
+    // front O(1)
 
     public T front() {
         if (!isEmpty())
@@ -47,17 +47,17 @@ public class MyQueue<T> {
         return null;
     }
 
-    // isEmpty
+    // isEmpty O(1)
     public boolean isEmpty() {
         return size <= 0;
     }
 
-    // size
+    // size O(1)
     public int size() {
         return size;
     }
 
-    // delete
+    // delete O(n)
     public void delete(T n) {
         for (int i = 0; i < size; i++) {
             int indx = (head + i) % arreglo.length;

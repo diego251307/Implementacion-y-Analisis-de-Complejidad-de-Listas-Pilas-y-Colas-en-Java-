@@ -156,10 +156,12 @@ public class SinglyLinkedListWithTail<T> {
         return empty() ? null : tail.data;
     }
 
+    // empty O(1)
     public boolean empty() {
         return head == null;
     }
 
+    // size O(1)
     public int size() {
         return size;
     }

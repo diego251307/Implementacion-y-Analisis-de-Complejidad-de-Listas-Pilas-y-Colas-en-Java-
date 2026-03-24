@@ -22,20 +22,24 @@ public class DoublyLinkedListNoTail<T> {
         this.size = 0;
     }
 
+    // isEmpty O(1)
     public boolean isEmpty() {
         return head == null;
     }
 
+    // size O(1)
     public int size() {
         return size;
     }
 
+    // topFront O(1)
     public T topFront() {
         if (isEmpty())
             throw new RuntimeException("Lista vacía");
         return head.data;
     }
 
+    // topBack O(n)
     public T topBack() {
         if (isEmpty())
             throw new RuntimeException("Lista vacía");
@@ -45,6 +49,7 @@ public class DoublyLinkedListNoTail<T> {
         return current.data;
     }
 
+    // pushFront O(1)
     public void pushFront(T data) {
         Node<T> newNode = new Node<>(data);
         if (!isEmpty()) {
@@ -55,6 +60,7 @@ public class DoublyLinkedListNoTail<T> {
         size++;
     }
 
+    // pushBack O(n)
     public void pushBack(T data) {
         Node<T> newNode = new Node<>(data);
         if (isEmpty()) {
@@ -69,6 +75,7 @@ public class DoublyLinkedListNoTail<T> {
         size++;
     }
 
+    // popFront O(1)
     public T popFront() {
         if (isEmpty())
             throw new RuntimeException("Lista vacía");
@@ -80,6 +87,7 @@ public class DoublyLinkedListNoTail<T> {
         return data;
     }
 
+    // popBack O(n)
     public T popBack() {
         if (isEmpty())
             throw new RuntimeException("Lista vacía");
@@ -98,6 +106,7 @@ public class DoublyLinkedListNoTail<T> {
         return data;
     }
 
+    // find O(n)
     public Node<T> find(T data) {
         Node<T> current = head;
         while (current != null) {
@@ -108,6 +117,7 @@ public class DoublyLinkedListNoTail<T> {
         return null;
     }
 
+    // erase O(n)
     public void erase(T data) {
         Node<T> target = find(data);
         if (target == null)
@@ -115,6 +125,7 @@ public class DoublyLinkedListNoTail<T> {
         eraseNode(target);
     }
 
+    // eraseNode O(1). Llamado dentro de erase para esta aplicacion
     public void eraseNode(Node<T> target) {
         if (target == null)
             return;
@@ -129,6 +140,7 @@ public class DoublyLinkedListNoTail<T> {
         size--;
     }
 
+    // addBefore O(n)
     public void addBefore(T reference, T newData) {
         Node<T> target = find(reference);
         if (target == null)
@@ -145,6 +157,7 @@ public class DoublyLinkedListNoTail<T> {
         size++;
     }
 
+    // addAfter O(n)
     public void addAfter(T reference, T newData) {
         Node<T> target = find(reference);
         if (target == null)
@@ -159,6 +172,7 @@ public class DoublyLinkedListNoTail<T> {
         size++;
     }
 
+    // print O(n). No probado en main pero de utilidad como extra
     public void print() {
         Node<T> current = head;
         System.out.print("null <-> ");

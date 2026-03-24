@@ -24,26 +24,31 @@ public class DoublyLinkedListWithTail<T> {
         this.size = 0;
     }
 
+    // isEmpty O(1)
     public boolean isEmpty() {
         return head == null;
     }
 
+    // size O(1)
     public int size() {
         return size;
     }
 
+    // topFront O(1)
     public T topFront() {
         if (isEmpty())
             throw new RuntimeException("Lista vacía");
         return head.data;
     }
 
+    // topBack O(1)
     public T topBack() {
         if (isEmpty())
             throw new RuntimeException("Lista vacía");
         return tail.data;
     }
 
+    // pushFront O(1)
     public void pushFront(T data) {
         Node<T> newNode = new Node<>(data);
         if (isEmpty()) {
@@ -57,6 +62,7 @@ public class DoublyLinkedListWithTail<T> {
         size++;
     }
 
+    // pushBack O(1)
     public void pushBack(T data) {
         Node<T> newNode = new Node<>(data);
         if (isEmpty()) {
@@ -70,6 +76,7 @@ public class DoublyLinkedListWithTail<T> {
         size++;
     }
 
+    // popFront O(1)
     public T popFront() {
         if (isEmpty())
             throw new RuntimeException("Lista vacía");
@@ -85,6 +92,7 @@ public class DoublyLinkedListWithTail<T> {
         return data;
     }
 
+    // popBack O(1)
     public T popBack() {
         if (isEmpty())
             throw new RuntimeException("Lista vacía");
@@ -100,6 +108,7 @@ public class DoublyLinkedListWithTail<T> {
         return data;
     }
 
+    // find O(n)
     public Node<T> find(T data) {
         Node<T> current = head;
         while (current != null) {
@@ -110,6 +119,7 @@ public class DoublyLinkedListWithTail<T> {
         return null;
     }
 
+    // erase O(n)
     public void erase(T data) {
         Node<T> target = find(data);
         if (target == null)
@@ -117,6 +127,8 @@ public class DoublyLinkedListWithTail<T> {
         eraseNode(target);
     }
 
+    // eraseNode O(1) Se llama después de encontrar el nodo, se asume que el nodo
+    // existe
     public void eraseNode(Node<T> target) {
         if (target == null)
             return;
@@ -133,6 +145,7 @@ public class DoublyLinkedListWithTail<T> {
         size--;
     }
 
+    // addBefore O(n) utiliza find O(n) + O(1) para insertar
     public void addBefore(T reference, T newData) {
         Node<T> target = find(reference);
         if (target == null)
@@ -149,6 +162,7 @@ public class DoublyLinkedListWithTail<T> {
         size++;
     }
 
+    // addAfter O(n) se utiliza find O(n) + O(1) para insertar
     public void addAfter(T reference, T newData) {
         Node<T> target = find(reference);
         if (target == null)
@@ -165,6 +179,7 @@ public class DoublyLinkedListWithTail<T> {
         size++;
     }
 
+    // print O(n). No probado pero de utilidad como extra
     public void print() {
         Node<T> current = head;
         System.out.print("null <-> ");

@@ -4,7 +4,8 @@ package Stack;
  * Implementación genérica de una pila (Stack) usando un arreglo dinámico.
  * 
  * - Estructura LIFO: el último elemento en entrar es el primero en salir.
- * - Internamente se almacena en un Object[] por limitaciones de genéricos en Java.
+ * - Internamente se almacena en un Object[] por limitaciones de genéricos en
+ * Java.
  * 
  * @param <T> Tipo de dato que almacenará la pila.
  */
@@ -16,7 +17,10 @@ public class MyStack<T> {
     /** Cantidad de elementos actualmente almacenados en la pila. */
     private int size;
 
-    /** Capacidad actual del arreglo interno (cuántos elementos puede soportar antes de crecer). */
+    /**
+     * Capacidad actual del arreglo interno (cuántos elementos puede soportar antes
+     * de crecer).
+     */
     private int capacity;
 
     /** Capacidad inicial por defecto al crear una pila nueva. */
@@ -66,9 +70,8 @@ public class MyStack<T> {
      * @return elemento en la cima
      * @throws RuntimeException si la pila está vacía
      * 
-     * Complejidad: O(1)
+     *                          Complejidad: O(1)
      */
-    @SuppressWarnings("unchecked")
     public T pop() {
         if (isEmpty())
             throw new RuntimeException("Pila vacía");
@@ -76,7 +79,8 @@ public class MyStack<T> {
         // La cima está en el índice size - 1
         T top = (T) data[size - 1];
 
-        // Se limpia la referencia para ayudar al recolector de basura (evita "loitering")
+        // Se limpia la referencia para ayudar al recolector de basura (evita
+        // "loitering")
         data[size - 1] = null;
 
         // Se reduce el tamaño lógico de la pila
@@ -90,9 +94,8 @@ public class MyStack<T> {
      * @return elemento en la cima
      * @throws RuntimeException si la pila está vacía
      * 
-     * Complejidad: O(1)
+     *                          Complejidad: O(1)
      */
-    @SuppressWarnings("unchecked")
     public T peek() {
         if (isEmpty())
             throw new RuntimeException("Pila vacía");
@@ -116,16 +119,17 @@ public class MyStack<T> {
     }
 
     /**
-     * Elimina la primera ocurrencia del elemento n buscando desde la cima hacia el fondo.
+     * Elimina la primera ocurrencia del elemento n buscando desde la cima hacia el
+     * fondo.
      * 
      * - Recorre desde el último elemento (cima) hasta el primero (fondo).
      * - Si lo encuentra, "corre" los elementos para cerrar el hueco.
      * 
-     * Nota: Esto no es una operación típica de una pila estricta, pero se incluye como utilidad.
+     * Nota: Esto no es una operación típica de una pila estricta, pero se incluye
+     * como utilidad.
      * 
      * Complejidad: O(n) por la búsqueda + posible desplazamiento.
      */
-    @SuppressWarnings("unchecked")
     public void delete(T n) {
         // Buscar desde la cima hacia abajo para borrar la ocurrencia más "reciente"
         for (int i = size - 1; i >= 0; i--) {
@@ -144,17 +148,17 @@ public class MyStack<T> {
 
     /**
      * Retorna la capacidad actual del arreglo interno.
-     * (No confundir con size(), que es la cantidad de elementos reales almacenados.)
+     * (No confundir con size(), que es la cantidad de elementos reales
+     * almacenados.)
      */
     public int capacity() {
         return capacity;
     }
 
     /**
-     * Representación en texto de la pila, mostrando la cima primero y el fondo al final.
+     * Representación en texto de la pila, mostrando la cima primero y el fondo al
+     * final.
      */
-    @Override
-    @SuppressWarnings("unchecked")
     public String toString() {
         if (isEmpty())
             return "Pila vacía []";

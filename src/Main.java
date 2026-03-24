@@ -6,25 +6,25 @@ import SinglyLinkedList.SinglyLinkedListNoTail;
 // import DoublyLinkedList.DoublyLinkedListNoTail;
 // import DoublyLinkedList.DoublyLinkedListWithTail;
 
-// Se descomenta la estructura a usar
+// Se descomenta la estructura a usar arriba
 
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
-// Pruebas de estructuras de datos.
+// Pruebas de estructuras de datos
 
 // Realizado con base de la guia de codigo dada en Moodle, indicaciones dadas por el monitor y apoyo de la inteligencia artificial para organizar codigo y revisar integridad de las mediciones
 // Se ajustaba el main creando los run para cada metodo de cada clase, se acumulaba y corria el graficador cuando se consideraba completo datos.csv
 
-// Para usar se descomenta un bloque run del main(), se puede correr por consola o directo con el vscode
+// Para usar se descomenta un bloque run del main()
 // Los datos se acumulan en out/datos.csv con append. Se realiza grafica con graficador.py.
 public class Main {
 
     static final int RUNS = 3; // mediciones por N, se toma la mediana
     static final int K = 3; // operaciones aleatorias medidas por run, se promedian
     static final int WARMUP = 2; // pasadas previas para que el JIT compile antes de medir
-    static final long SEED = 42L; // semilla fija para los randoms, que hace reproducible las pruebas
+    static final long SEED = 42L; // semilla fija para los randoms,para hacer reproducible las pruebas
 
     // Tamanos de N: 10^1 hasta 10^8 por guia
     static final long[] NS = { 10L, 100L, 1_000L, 10_000L, 100_000L, 1_000_000L, 10_000_000L, 100_000_000L };
@@ -67,7 +67,7 @@ public class Main {
         return (double) total / K;
     }
 
-    // Warmup con N pequeno para que el JIT compile los hot paths antes de medir.
+    // Warmup con N pequeno para que el JIT compile y caliente antes de medir.
     // Luego ejecuta RUNS con mediciones reales y devuelve los tiempos en ns.
 
     // Factory es una lambda que crea la estructura vacia a medir, se llama antes de
@@ -75,7 +75,7 @@ public class Main {
     // fill y measure son lambdas que hacen las operaciones correspondientes sobre
     // la estructura creada por factory.
     static double[] bench(Factory factory, Op fill, Op measure, long n) {
-        long wN = Math.min(n, 1_000); // warmup con N pequeño para que sea rapido pero que no este vacio
+        long wN = Math.min(n, 1_000); // warmup con N pequeño para que sea rapido pero que sea significativo
         for (int w = 0; w < WARMUP; w++) {
             factory.make(); // reset de la estructura antes de cada warmup. Se crea y llena pero no se mide,
                             // solo para que el JIT compile el codigo.
@@ -92,7 +92,7 @@ public class Main {
                                                        // operaciones medidas en res[r].
         }
         return res; // Se devuelve el arreglo con los tiempos de cada run real, que luego se usara
-                    // para calcular la mediana y guardar en CSV.
+                    // para calcular la mediana para mensaje en consola y guardar en CSV.
     }
 
     // Se utiliza la mediana para reportar el resultado de cada N en consola
@@ -148,6 +148,7 @@ public class Main {
 
         // PARA SinglyLinkedListNoTail
         // Fill siempre con pushFront (O(1)) para construir N nodos rapido sin sesgo.
+        // Para cualquier estructura pues utilizar el insert constante
 
         SinglyLinkedListNoTail<Long>[] l = new SinglyLinkedListNoTail[1]; // Arreglo para guardar la referencia a la
                                                                           // estructura creada por factory, se usa un

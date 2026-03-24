@@ -26,7 +26,7 @@ plt.rcParams.update({
     "grid.alpha":        0.7,
 })
 
-# --- Carga de datos ---------------------------------------------------------
+# Se cargan los datos
 
 try:
     df = pd.read_csv("out/datos.csv", dtype={"Estructura": str, "Metodo": str})
@@ -37,7 +37,7 @@ except FileNotFoundError:
 df = df[df["N"] > 0].dropna(subset=["N"])
 df["Label"] = df["Estructura"] + " · " + df["Metodo"]
 
-# Mediana por (Label, N).
+# Mediana dado por (Label, N)
 agg = (
     df.groupby(["Label", "N"])["Tiempo_ns"]
       .median()
@@ -45,7 +45,7 @@ agg = (
       .rename(columns={"Tiempo_ns": "Mediana_ns"})
 )
 
-# Unidad automática según rango de datos.
+# Unidad automática según rango de los datos
 max_ns = agg["Mediana_ns"].max()
 factor, unidad = (1, "ns") if max_ns < 1_000 else (1_000, "µs")
 
@@ -60,7 +60,7 @@ tabla = (
        .reindex(ns)[labels].round(3)
 )
 
-# --- Layout dinámico --------------------------------------------------------
+# Layout dinamico
 
 n_cols  = len(labels)
 tabla_h = 1.0 + len(ns) * 0.28
@@ -74,7 +74,7 @@ ax_plot  = fig.add_subplot(gs[0])
 ax_table = fig.add_subplot(gs[1])
 ax_table.axis("off")
 
-# --- Gráfico ----------------------------------------------------------------
+# Grafico
 
 for idx, label in enumerate(labels):
     datos = agg[agg["Label"] == label].sort_values("N")
@@ -104,7 +104,7 @@ ax_plot.set_ylabel(f"Tiempo por operación ({unidad})  [mediana]", fontsize=11)
 ax_plot.legend(title="Estructura · Método", loc="upper left",
                 bbox_to_anchor=(1.01, 1), borderaxespad=0, framealpha=0.9)
 
-# --- Tabla ------------------------------------------------------------------
+# Tabla
 
 row_labels = [f"N=10^{int(round(np.log10(n)))}" for n in ns]
 cell_text  = []
@@ -112,7 +112,6 @@ for n_val in ns:
     row = []
     for lbl in labels:
         val = tabla.at[n_val, lbl] if lbl in tabla.columns else np.nan
-        # Cambio aquí: de :.4f a :.3f
         row.append(f"{val:.3f}" if pd.notna(val) else "—")
     cell_text.append(row)
 
@@ -137,7 +136,7 @@ fig.text(ax_pos.x0 + ax_pos.width / 2, ax_pos.y1 + 0.005,
          f"Mediana {unidad}/op  (tiempo promedio por operación)",
          ha="center", va="bottom", fontsize=9, color="#555", fontstyle="italic")
 
-# --- Guardar ----------------------------------------------------------------
+# Se guarda
 
 outfile = "out/datos.png"
 plt.savefig(outfile, bbox_inches="tight", dpi=200)
