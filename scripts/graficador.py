@@ -29,7 +29,7 @@ plt.rcParams.update({
 # --- Carga de datos ---------------------------------------------------------
 
 try:
-    df = pd.read_csv("out/datos_3F.csv", dtype={"Estructura": str, "Metodo": str})
+    df = pd.read_csv("out/datos.csv", dtype={"Estructura": str, "Metodo": str})
 except FileNotFoundError:
     print("[Error] No se encontró out/datos.csv")
     sys.exit(1)
@@ -139,7 +139,7 @@ fig.text(ax_pos.x0 + ax_pos.width / 2, ax_pos.y1 + 0.005,
 
 # --- Guardar ----------------------------------------------------------------
 
-outfile = "out/datos_3F.png"
+outfile = "out/datos.png"
 plt.savefig(outfile, bbox_inches="tight", dpi=200)
 print(f"[OK] Guardado: {outfile}")
 plt.show()
